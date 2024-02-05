@@ -7,12 +7,26 @@ const CreateJob = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     data.skills = selectedOption;
-    console.log(data);
+    // console.log(data);
+    fetch("http://localhost:3000/post-job", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        if (result.acknowledged === true) {
+          alert("Job Posted Successfully!!");
+        }
+        reset();
+      });
   };
 
   const options = [
@@ -167,17 +181,17 @@ const CreateJob = () => {
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Description</label>
             <textarea
-              className="w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-700"
+              className="w-full pl-3 py-1.5 focus:outline-none placeholder:text-gray-400"
               rows={6}
-              placeholder="Job description"
-              defaultValue={
-                "when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
-              }
+              placeholder="Enter Job description..."
+              // defaultValue={
+              //   "when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+              // }
               {...register("description")}
             />
           </div>
 
-          {/* 7th ROW */}
+          {/* 8th ROW */}
           <div className="w-full">
             <label className="block mb-2 text-lg">Job Posted By</label>
             <input
